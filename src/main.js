@@ -243,11 +243,8 @@ Formsy.Form = createReactClass({
       _externalError: null
     }, () => {
       this.validateForm();
-      validation.isValid && this.props.onValidField(component);
+      component.isPristine() && component.isValid() && this.props.onValidField(component);
     });
-
-    
-
   },
 
   // Checks validation on current value or a passed value
