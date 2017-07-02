@@ -263,9 +263,10 @@ Formsy.Form = createReactClass({
     var isRequired = Object.keys(component._requiredValidations).length ? !!requiredResults.success.length : false;
     var isValid = !validationResults.failed.length && !(this.props.validationErrors && this.props.validationErrors[component.props.name]);
     
-    // Notify when a field is valid
-    isRequired && isValid && this.props.onValidField(component, value);
-
+    if (isRequired && isValid) {
+      this.props.onValidField(component.props, value);
+    }
+    
     return {
       isRequired: isRequired,
       isValid: isRequired ? false : isValid,
@@ -442,6 +443,7 @@ Formsy.Form = createReactClass({
       preventExternalInvalidation,
       onSuccess,
       onError,
+      onValidField,
       ...nonFormsyProps
     } = this.props;
 
