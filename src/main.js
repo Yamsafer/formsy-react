@@ -235,12 +235,18 @@ Formsy.Form = createReactClass({
     var validation = this.runValidation(component);
     // Run through the validations, split them up and call
     // the validator IF there is a value or it is required
+
     component.setState({
       _isValid: validation.isValid,
       _isRequired: validation.isRequired,
       _validationError: validation.error,
       _externalError: null
-    }, this.validateForm);
+    }, () => {
+      this.validateForm();
+      validation.isValid && this.props.onValidField(component);
+    });
+
+    
 
   },
 
@@ -262,16 +268,10 @@ Formsy.Form = createReactClass({
 
     var isRequired = Object.keys(component._requiredValidations).length ? !!requiredResults.success.length : false;
     var isValid = !validationResults.failed.length && !(this.props.validationErrors && this.props.validationErrors[component.props.name]);
-    
-    const _isValid = isRequired ? false : isValid;
-    
-    if (_isValid) {
-      this.props.onValidField(component.props, value);
-    }
-    
+
     return {
       isRequired: isRequired,
-      isValid: _isValid,
+      isValid: isRequired ? false : isValid,
       error: (function () {
 
         if (isValid && !isRequired) {
