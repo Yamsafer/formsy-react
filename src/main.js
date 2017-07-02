@@ -243,7 +243,7 @@ Formsy.Form = createReactClass({
       _externalError: null
     }, () => {
       this.validateForm();
-      component.isPristine() && component.isValid() && this.props.onValidField(component);
+      !component.isPristine() && component.isValid() && this.props.onValidField(component);
     });
   },
 
