@@ -42,6 +42,7 @@ Formsy.Form = createReactClass({
       onValid: function () {},
       onInvalid: function () {},
       onChange: function () {},
+      onValidField: function () {},
       validationErrors: null,
       preventExternalInvalidation: false
     };
@@ -245,7 +246,7 @@ Formsy.Form = createReactClass({
 
   // Checks validation on current value or a passed value
   runValidation: function (component, value) {
-
+    
     var currentValues = this.getCurrentValues();
     var validationErrors = component.props.validationErrors;
     var validationError = component.props.validationError;
@@ -261,6 +262,9 @@ Formsy.Form = createReactClass({
 
     var isRequired = Object.keys(component._requiredValidations).length ? !!requiredResults.success.length : false;
     var isValid = !validationResults.failed.length && !(this.props.validationErrors && this.props.validationErrors[component.props.name]);
+    
+    // Notify when a field is valid
+    isRequired && isValid && this.props.onValidField(component, value);
 
     return {
       isRequired: isRequired,
