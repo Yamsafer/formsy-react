@@ -263,13 +263,15 @@ Formsy.Form = createReactClass({
     var isRequired = Object.keys(component._requiredValidations).length ? !!requiredResults.success.length : false;
     var isValid = !validationResults.failed.length && !(this.props.validationErrors && this.props.validationErrors[component.props.name]);
     
-    if (isRequired && isValid) {
+    const _isValid = isRequired ? false : isValid;
+    
+    if (_isValid) {
       this.props.onValidField(component.props, value);
     }
     
     return {
       isRequired: isRequired,
-      isValid: isRequired ? false : isValid,
+      isValid: _isValid,
       error: (function () {
 
         if (isValid && !isRequired) {
@@ -297,7 +299,6 @@ Formsy.Form = createReactClass({
             return arr.indexOf(x) === pos;
           });
         }
-
       }.call(this))
     };
 
